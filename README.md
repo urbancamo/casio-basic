@@ -6,7 +6,7 @@ This is my entry for the
 subsequent challenges.
 
 The Casio Pocket Computer range use a fairly standardized version 
-of BASIC. This project is to create a parser for 
+of BASIC called [Casio BASIC](https://en.wikipedia.org/wiki/Casio_BASIC). This project is to create a parser for 
 BASIC using the programming language [Scala](https://scala-lang.org)
 and the parser library [fastparse](https://github.com/com-lihaoyi/fastparse).
 
