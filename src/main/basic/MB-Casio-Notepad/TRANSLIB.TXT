@@ -1,0 +1,26 @@
+Anwendung von TRANS-LIB
+
+Dieses Programm uebertraegt ein beliebiges Library-Programm in den
+Programmbereich P0 Ihres Casio FX-850P.
+
+Stellen Sie vor dem Uebertragen sicher, dass genuegend Speicherplatz auf Ihrem
+Casio-Rechner vorhanden ist (Der Basic-Befehl NEW loescht ein Programm im
+aktuellen Programmbereich. Falls Sie alle Programme loeschen wollen, verwenden
+Sie den Basic-Befehl NEW ALL. Denken Sie aber vorher an Ihre Datensicherung!).
+
+Nun kopieren Sie das Programmm TRANSL1.CAS nach P1 und das Programm TRANSL2.CAS
+nach P2. Da das Library-Programm in P0 erzeugt wird, sollten sie diesen
+Programmbereich unbedingt l”schen (falls noch nicht geschehen).
+Starten Sie das Programm im Programmbereich P1, und geben Sie die gewuenschte
+LIB-Nummer ein. Falls Sie eine Nummer eingegeben haben, wird das Library-
+Programm im Programmbereich P0 erstellt. Dort koennen Sie es listen, starten
+oder abspeichern (aber nicht editieren!). Das Programm im Programmbereich P2
+macht den Programmbereich P0 wieder normal nutzbar. Bei Bedarf abgespeichertes
+LIB-Programm wieder in den Computer laden wobei Sie es nun auch editieren
+koennen.
+
+
+Viel Erfolg wuenscht Ihnen...
+
+/\/\anfred Becker
+MailTo:mani.becker@web.de
