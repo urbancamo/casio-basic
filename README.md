@@ -32,5 +32,5 @@ the parser.
 ----
 This project is hosted on [GitHub](https://github.com/urbancamo/casio-basic).
 
-Follow me on twitter as [@urbancamo](https://twitter.com/urbancamo)
+Follow me on twitter as [@urbancamo](https://twitter.com/urbancamo).
 
