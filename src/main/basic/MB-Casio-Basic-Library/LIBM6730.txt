@@ -1,0 +1,30 @@
+5 IFsq<>60 ANDsq<>62 THENsq=226
+10 MODE8:DIM:GOSUB900:ERASEb$:DIMb$(1):b$(0)="Reject":b$(1)="Accept":t$="Test     Hû:Ž’=Žû’  Hü:Ž’"+CHR$(sq)+"Žû’":c$=CHR$(5):DEFCHR$(252)="123E020000"
+20 CLS:PRINTt$;TAB(0);"input new data (Y/N) ?";:a$=INPUT$(1)
+25 IFa$<>"Y" ANDa$<>"y" THEN40
+30 s$="x":GOSUB"LIB0:S6020":GOSUB900
+40 r=0:f=5:s=sa:IFs>1 THENt=sm ELSEt=0
+45 CLS:PRINTt$;
+50 z=r:s$="Žû’":GOSUB500:r=z
+60 z=s:s$="n":GOSUB500:s=z
+70 z=t:s$="S":GOSUB500:t=z
+90 CLS:PRINT"Significance level ˆ[%]";
+95 z=f:s$="ˆ":GOSUB500:f=z:IFf<0 ORf>100 THEN95
+97 CLS:PRINTt$;TAB(0);".....";
+100 n=s-1:p=f/100:IFsq=226 THENp=p/2 ELSEIFsq=60 THENp=1-p
+102 g=0:sr=0:GOSUB"LIB0:S6420":GOSUB900:IFsr THEN*
+104 IFsq=226 THENg=x:p=1-p:GOSUB"LIB0:S6420":GOSUB900:IFsr THEN* ELSEb=x:x=g:g=b
+110 b=1:z=t/r:GOSUB400:a=z:z=x:GOSUB400:x=z:z=g:GOSUB400:g=z
+120 IF(sq=226 ORsq=62) ANDa>x THENb=0
+122 IFsq=60 ANDa<x THENb=0
+123 IFsq=226 ANDa<g THENc=0 ELSEc=1
+130 z=SGN(sq-60):PRINTc$;a;CHR$(60+z*2+b*(164-z));x;:IFsq<63 THENPRINT": ";b$(b);:GOTO150
+140 PRINTTAB(0);a;CHR$(60+c*164);g;": ";b$(b AND c);
+150 a$=INPUT$(1,@):GOTO45
+400 IFz THENz=ROUND(z,LOG(ABSz)-5)
+410 RETURN
+500 LOCATE0,1:PRINTc$;s$;"=";z;"?";:INPUT@10;z:LOCATE0,0:RETURN
+900 ONERRORGOTO910:RETURN
+910 IFERR=1 THENCLS:ONERRORGOTO0
+920 IFERL=500 THENRESUME500
+930 LOCATE0,1:PRINTc$;"not found";:z$=INPUT$(1,@):RESUME20

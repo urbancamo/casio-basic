@@ -18,6 +18,18 @@ and have built a cable that allows me to download and upload files. This will al
 
 ![Casio FX-850P](https://cloud10.todocoleccion.online/segunda-mano/tc/2020/07/10/13/211392181_220294715.jpg)
 
+## 03-OCT-2022
+
+First update! At the moment I am scouring the internet for Casio Pocket
+Computer resources - I'll make a comprehensive resources list. 
+
+My first proper task will be to document the Casio Basic dialect, with all
+options for the FX-850P. The language evolved as new models were released.
+
+I've also found some sample programs which will be really useful when testing
+the parser.
+
+----
 This project is hosted on [GitHub](https://github.com/urbancamo/casio-basic).
 
 Follow me on twitter as [@urbancamo](https://twitter.com/urbancamo)

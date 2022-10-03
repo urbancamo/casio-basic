@@ -1,0 +1,197 @@
+         ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+         º                                                         º
+         º  PROGRAMA DE COMUNICACIONES PARA CASIO FX-850P/FX-880P  º
+         º                                                         º
+         ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+
+                                 Versi¢n 1.4
+
+                           27 de Noviembre de 1996
+
+                           (C) FELIPE POLO LEONOR
+
+
+1. DESCRIPCION
+
+     El presente programa permite la manipulaci¢n y transferencia de ficheros
+entre un PC y una calculadora Casio FX-850P/FX-880P (posiblemente tambi‚n
+funcione con el modelo PB-1000).
+
+     Su caracter¡stica m s destacada es que la conexi¢n entre ambos equipos
+se realiza a trav‚s del puerto paralelo del PC (LPT1), £nicamente mediante UN
+CONECTOR Y CUATRO HILOS, sin necesidad de ninguna otra circuiter¡a adicional
+(por ejemplo, la unidad FA-6).
+
+     El programa est  construido en un entorno Turbo Visi¢n, y hace uso del
+juego de caracteres de la calculadora, lo que permite la escritura, lectura,
+correcci¢n e impresi¢n de programas (y banco de datos), al estilo WYSIWYG.
+Requiere la presencia de una tarjeta gr fica VGA, y procesador 286 o superior.
+
+     Se proh¡be la venta de este programa. El autor no se responsabiliza de
+ning£n da¤o que pueda ser causado sobre los equipos, programas o datos del
+usuario, ya sea accidentalmente o por el uso, debido o indebido, del programa
+o del cable descrito en este documento.
+
+
+2. CONEXION
+
+     Si adoptamos como numeraci¢n de las entradas del conector Casio la
+siguiente:
+
+                             1ÚÂÂÂÂÂÂÂÂÂÂÂÂÂÂ¿15
+                              ÃÅÅÅÅÅÅÅÅÅÅÅÅÅÅ´
+                            16ÀÁÁÁÁÁÁÁÁÁÁÁÁÁÁÙ30
+
+y usamos un conector Amphenol de 36 pines o un conector tipo D de 25 pines en
+el PC, la correspondencia es:
+
+                            Casio     PC
+                              5 -----  2 (DATA0)
+                             21 ----- 10 (/ACK)
+                             22 ----- 11 (BUSY)
+                             30 ----- 19 (GND)
+
+     Si la conexi¢n de la impresora usa uno diferente, buscar los pines
+correspondientes de las se¤ales dadas en la documentaci¢n del conector.
+
+     Lo ideal es comprarse un conector id‚ntico al que lleva montado la
+impresora, para as¡ poderlo ensamblar al extremo del cable que viene del PC.
+As¡ tendremos m s movilidad que si nos conectamos directamente a la salida de
+impresora que trae el PC.
+
+     El tipo de cable m s adecuado para la conexi¢n de la calculadora es el
+usado en telefon¡a, por ejemplo para la instalaci¢n de tel‚fonos supletorios,
+por ser monofilar y tener el di metro apropiado para su introducci¢n en el
+conector Casio.
+
+
+3. MANEJO
+
+     El programa es casi autoexplicativo. Para una transferencia correcta,
+s¢lo hay que respetar el orden en que se ejecutan las operaciones, seg£n
+indican los mensajes que aparecen al usar las opciones de Transmisi¢n y
+Recepci¢n.
+
+     Para introducir caracteres especiales, pulsar la tecla ALT, y sin
+soltarla, escribir EN EL TECLADO NUMERICO el c¢digo correspondiente al
+car cter deseado (en decimal), y liberar la tecla ALT. Para averiguar los
+c¢digos, es conveniente hacer uso de la Tabla de Caracteres del men£ de la
+izquierda. Los caracteres especiales s¢lo se visualizar n si al arrancar el
+programa se encuentra habilitada la opci¢n "Usar caracteres tipo Casio".
+
+     En las pruebas que he hecho, la calculadora ha sido capaz de seguir el
+ritmo de la transferencia a 4800 bps, tanto en Transmisi¢n como en Recepci¢n.
+De todas formas, si hay problemas a esta velocidad, se recomienda probar a una
+menor.
+
+     Para recibir en el PC un programa BASIC, poner la calculadora en modo
+BASIC (MODE 1), pasar al  rea de programa ("S" +  rea), y escribir
+SAVE "COM0:velocidad", donde velocidad es la indicada al pulsar F8
+(Recepci¢n) en el PC. A continuaci¢n, pulsar PRIMERO Enter (u OK) en el PC y
+SEGUNDO ejecutar el SAVE en la calculadora. En el caso de que se quiera
+recibir el contenido del Banco de Datos, escribir en la Casio
+SAVE#"COM0:velocidad".
+
+     Para transmitir a la calculadora un programa, se sigue un procedimiento
+similar, pero usando LOAD en lugar de SAVE, y dando las ¢rdenes de
+confirmaci¢n de la transferencia PRIMERO a la Casio, y SEGUNDO al PC. Idem
+respecto al Banco de Datos.
+
+     La extensi¢n por defecto de todos los archivos es .FX
+
+
+4. IMPRESION DE DOCUMENTOS
+
+     Para facilitar la obtenci¢n de copias impresas de los archivos .FX, usando
+el juego de caracteres de la calculadora, se adjunta el archivo CASIO.FON, que
+contiene el tipo de letra "Casio FX-850P" en formato de fuente Windows.
+
+     La instalaci¢n de la fuente se efect£a a trav‚s del Panel de control de
+Windows, usando la opci¢n Fuentes | Agregar, y seleccionando el tipo de letra
+"Casio FX850". A partir de ese momento, los archivos .FX generados por el
+programa de comunicaciones pueden imprimirse correctamente desde cualquier
+procesador de textos que permita la selecci¢n de tipos de letra, como Write o
+Word. Puede emplearse adem s el Mapa de caracteres del grupo Accesorios para
+visualizar con m s claridad el juego de caracteres completo.
+
+     Por supuesto, si el texto que se desea imprimir no contiene caracteres
+extendidos, o se prefiere usar otro tipo de letra, puede efectuarse la
+impresi¢n desde cualquier editor de texto ASCII, sin necesidad de entrar
+siquiera en Windows.
+
+
+5. INCOMPATIBILIDADES
+
+     Durante las transferencias, el programa se apropia en exclusiva de la
+interrupci¢n 8, por exigencias de muestreo del puerto paralelo. Esto paraliza
+el reloj BIOS (no as¡ el CMOS) en los instantes que dura la transferencia, y es
+posible alg£n comportamiento extra¤o con el motor de las disqueteras, si ‚stas
+se encontraban en marcha al inicio de una transferencia (p.ej., si se ejecuta
+el programa desde disquete). Puede haber conflicto si alg£n otro programa hace
+uso de la interrupci¢n 8 (residente o dentro de un Shell).
+
+     Dentro de sesiones DOS bajo Windows, el programa funciona correctamente
+como editor, pero no aseguro que funcionen las operaciones de Transmisi¢n y
+Recepci¢n (de hecho, a m¡ no me funcionan). El juego de caracteres extendido
+s¢lo ser  visible si se ejecuta en modo de pantalla completa, en lugar de en
+una ventana.
+
+     La configuraci¢n (velocidades, puerto y modo inicial de v¡deo) se almacena
+mediante modificaci¢n del propio ejecutable, de forma que hay que evitar la
+adhesi¢n de checksums por parte de utilidades antivirus. El programa se
+autochequea al arrancar, y es poco probable que contraiga una infecci¢n
+v¡rica sin que su funcionamiento se vea interrumpido.
+
+
+6. VERSIONES
+
+     Versi¢n 1.4:
+
+     - Ahora pueden abrirse archivos desde la l¡nea de comandos: p.ej., para
+       que el editor abra todos los archivos con extensi¢n FX, puede escribirse
+       "CASIO *.FX". Si el archivo introducido como par metro no exist¡a en el
+       disco, se abrir  un nuevo documento con ese nombre. Si no se especifica
+       ning£n par metro, se abrir  por defecto un documento en blanco.
+     - Creaci¢n del archivo de tipo de letra CASIO.FON, que permite la
+       impresi¢n de programas bajo Windows, usando el juego de caracteres
+       original de la calculadora.
+     - Correcci¢n de los errores producidos al usar el teclado durante las
+       transferencias de datos.
+     - Inclusi¢n de un nuevo recuadro en Opciones|Configuraci¢n, que permite
+       seleccionar el puerto de impresora que se usar  para las transferencias.
+     - Se incorpora el acceso a los men£s con la tecla ALT, adem s de con F10.
+     - Cambios de nombre y posici¢n de algunas opciones de men£.
+     - Inclusi¢n de un cuadro que aparece durante la espera en la recepci¢n de
+       datos, indicando la situaci¢n.
+     - Actualizaci¢n de la direcci¢n de correo electr¢nico que figura en este
+       documento, y revisi¢n general del texto.
+     - Cambio del m‚todo de compresi¢n del ejecutable.
+
+     Versi¢n 1.3: Corregido un error que imped¡a la recepci¢n en algunos
+sistemas (principalmente 486's): Ahora se enmascaran los valores extra¡dos
+del puerto, para filtrar £nicamente a los bits 6 y 7. Los bits restantes
+(0 a 5) pueden cambiar dependiendo de la tarjeta de entrada/salida.
+
+     Versi¢n 1.2: Presenta un mensaje de error cuando se intenta Transmitir
+desde una ventana vac¡a. Elimina el efecto de desaparici¢n del cursor al
+volver al sistema operativo. Corrige un error que se produc¡a tras abrir
+muchas ventanas en una sesi¢n. Deshabilita los eventos de rat¢n durante las
+transferencias de datos.
+
+     Versi¢n 1.1: Incluida una opci¢n que permite deshabilitar el juego de
+caracteres especiales Casio. Correcci¢n de un r¢tulo delator que aparec¡a al
+hacer un Shell al DOS.
+
+     Versi¢n 1.0: Primera versi¢n p£blica del programa.
+
+
+7. ATENCION AL USUARIO
+
+     Si quer‚is m s informaci¢n, comunicar alg£n error, o simplemente mantener
+correspondencia, pod‚is dejar un mensaje de correo en InterNet, mand ndolo a la
+direcci¢n fpolo@teleco.upv.es (v lida por lo menos hasta Septiembre de 1997).
+
+     Por £ltimo, deseo agradecer la colaboraci¢n de todos los usuarios que me
+han ayudado con sus sugerencias y detecci¢n de errores. Sin su ayuda, el
+programa permanecer¡a todav¡a en la versi¢n 1.0. Si la cooperaci¢n prosigue,
+apuesto a que ‚sta no ser  la £ltima.

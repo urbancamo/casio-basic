@@ -1,0 +1,17 @@
+10 GOSUB400:ANGLE1:IFp>1 ORp=<0 THEN*
+15 IFp=1 THENx=0:GOTO80
+20 IFm=1 THENm=p:p=.5-p/2:GOSUB"LIB0:S6430":GOSUB400:p=m:m=1:x=1/y^2:GOTO80
+30 IFn=1 THENn=m:p=p/2:GOSUB"LIB0:S6430":GOSUB400:n=1:p=p*2:x=y^2:GOTO80
+40 IFm=2 THENp=1-p:m=n:n=2:GOSUB100:p=1-p:n=m:m=2:x=1/x:GOTO80
+50 IFn>m THENp=1-p:d=n:n=m:m=d:GOSUB200:x=1/x:d=m:m=n:n=d:p=1-p:GOTO80
+60 GOSUB200
+80 y=x:RETURN
+100 GOSUB"LIB0:S6420":GOSUB400:x=y:a=n-2
+110 x=x/n*(1+((x-a)/2+(((4*x-11*a)*x+a*(7*n-10))/24+(((2*x-10*a)*x+a*(17*n-26))*x-a*a*(9*n-6))/48/m)/m)/m):RETURN
+200 GOSUB100
+210 d=x:c=p:GOSUB"LIB0:S6240":GOSUB400:p=c
+220 z=n+m:z=EXP((z*LN(z/(n*x+m))+(n-2)*LNx+LN(n*m/z)-LN(4*PI)-(1/n+1/m-1/z)/6)/2):x=x+(y-p)/z
+230 IFABS(d-x)>3E-4 THEN210 ELSERETURN
+400 ONERRORGOTO500:RETURN
+500 IFERR=1 THENCLS:ONERRORGOTO0
+510 sr=1:RESUME80
