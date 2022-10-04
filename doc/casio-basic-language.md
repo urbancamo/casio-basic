@@ -196,3 +196,88 @@ Reserved words not listed in the command section.
 ## Calculation Range
 ± 1 × 10⁻⁹⁹ ~ ± 9.9999999999 × 10⁻⁹⁹ and 0. Internal
 operation uses 12-digit mantissa.
+
+## Variable Types
+
+The three following types of variables are available for use with this unit.
+
+1. Numeric variables (up to 12-digit mantissa)  `A`, `a`, `NUMBER`, `POINTS`
+2. String variables (up to 255 characters) `A$`, `STRING$`
+3. Array variables:
+   - Numeric array `A(10)`, `XX(3,3,3)`
+   - String array `A$(10)`, `ARRAY$(2,2)`
+
+## Variable Names
+- Variable names can consist of upper, lower cas or numeric characters, but a numeric
+characters cannot be used in the first position of the variable name (i.e. 1AE, 3BC$ are illegal).
+- Reserved words cannot be used as the leading characters of a variable name (i.e. RUNON, LIST1$ are illegal).
+- The maximum length of variable names is 15 characters.
+
+## Arrays
+1. Arrays are declared by DIM statements.
+2. Elements are described by subscripts which are integers greater than 0. Fractions are discarded.
+3. The number of dimensions is limited by stack capacity.
+4. The maximum value of subscripts is limited by memory capacity.
+
+## Variable/Array Application
+1. Variables and arrays can be used jointly by all program areas.
+2. Arrays cannot be used unless first declared using the `DIM` statement.
+
+## Counting Bytes Used by Variables
+The following outlines the number of bytes reserved when a variable appears the first
+time within a program.
+
+- **Numeric Variables**
+  (variable name lengh + 12) bytes in the variable area
+- **String Variables**
+  (variable name length + 4) bytes in variable area and (string length + 1) bytes in the string area. Areas are reserved for array variables when the array is declared by the `DIM` statement.
+- **Numeric Array Variables**
+  (variable name length + 4) + (array size * 8) + (dimension x 2 + 1) bytes in variable area.
+
+**EXAMPLE:**
+
+`DIM XYZ(3,3,5,2)`
+
+- Name: 3
+- Size: 4 x 4 x 6 x 3 = 288
+- Dimension: 4
+- Calculation: (3+4) + (288x8) + 4x2 + 1 = 2320 bytes
+
+**String Array Variables**
+  (variable name length + 4) + (array size) + (dimension x 2) bytes in variable area.
+
+The lengths of individual strings are required in the variable area when strings are assigned to the array.
+
+**EXAMPLE:**
+```basic
+10 DIM ABS$(3,3)
+20 AB$(0,0) = "*****"
+```
+
+- Name: 2
+- Size: 4x4=16
+- Dimension: 2
+- Calculations: (2+4)+16+(2x2)+5 bytes
+
+**Calculating Program Length**
+The following shows points which must be considered when
+calculating memory requirements for programs.
+
+- Line numbers: 2 bytes per line number, regardless of the number length (1~65535)
+
+- Commands: 2 bytes per command
+
+- Functions: 2 bytes per function
+
+- Numeric/alphabetic characters: 1 byte per character (spaces are counted as characters)
+
+- `EXE` key: 1 byte per `EXE` key operation at end of program line (for storage of line) 1 byte added to sum of the above
+
+**EXAMPLE:**
+```basic
+10 A = SIN X
+```
+2 (line number) + 1 (space following line number) + 1 (A) + 1 (=) + 2 (SIN) + 1 (space) + 1 (X) + 1 (`EXE`) + 1 = 11
+
+The calculation indicates that a total of 11 bytes are required for storage of the above program.
+* the space following the line number is added automatically.
