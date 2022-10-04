@@ -34,3 +34,6 @@ This project is hosted on [GitHub](https://github.com/urbancamo/casio-basic).
 
 Follow me on twitter as [@urbancamo](https://twitter.com/urbancamo).
 
+## 04-OCT-2022
+
+Started documenting the [Casio Basic Language](doc/casio-basic-language.md).
