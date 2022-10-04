@@ -11,7 +11,7 @@ All commands are reserved words.
 | [&H](commands/AMP_H.md)                 | Converts the 1 through 4-digit hexadecimal value following &H to a decimal value                                                                                                                                                               |         155 |
 | [ABS](commands/ABS.md)                  | Returns the absolute value of the argument                                                                                                                                                                                                     |         137 |
 | [ACS](commands/ACS.md)                  | Returns the character code corresponding to the character in the first (leftmost) position of a string                                                                                                                                         |         147 |
-| [AND](commands/AND.md)                  | Logical AND operator                                                                                                                                                                                                                           |          58 |
+| [AND](commands/LOGICAL.md)              | Logical AND operator                                                                                                                                                                                                                           |          58 |
 | [ANGLE](commands/ANGLE.md)              | Specifies the angle unit                                                                                                                                                                                                                       |         129 |
 | [ASC](commands/ASN_ACS_ATN.md)          | Returns the value of the Inverse Cosine trigonometric function for the argument                                                                                                                                                                |         131 |
 | [ASN](commands/ASN_ACS_ATN.md)          | Returns the value of the Inverse Sine trigonometric function for the argument                                                                                                                                                                  |         131 |
@@ -79,13 +79,13 @@ All commands are reserved words.
 | [NEW ALL](commands/NEW.md)              | Clears the programs in all program areas and all variables                                                                                                                                                                                     |          89 |
 | [NEW#](commands/NEW_HASH.md)            | Clears DATA BANK data                                                                                                                                                                                                                          |         170 |
 | [NEXT](commands/FOR_NEXT_STEP.md)       | Executes the program lines between the FOR statement and NEXT statement and increments the control variable, starting with the initial value. Execution is terminated when the value of the control variable exceeds the specified final value |         104 |
-| [NOT](commands/NOT.md)                  | Logical Negation Operator                                                                                                                                                                                                                      |          57 |
+| [NOT](commands/LOGICAL.md)              | Logical Negation Operator                                                                                                                                                                                                                      |          57 |
 | [NPR](commands/NPR.md)                  | Returns the permutation *n*P*r* for the values of *n* and *r*                                                                                                                                                                                  |         143 |
 | [ON ERROR GOTO](commands/ON_ERROR_GOTO) | Specifies the line number to which execution branches when an error is generated                                                                                                                                                               |         126 |
 | [ON GOTO](commands/ON_GOTO.md)          | Jumps to a specified branch destination in accordance with a specified branching condition                                                                                                                                                     |         101 |
 | [ON GOSUB](commands/ON_GOSUB.md)        | Jumps to a specified subroutine in accordance with a specified branching condition                                                                                                                                                             |         102 |
 | [OPEN](commands/OPEN.md)                | Declares a file open for use                                                                                                                                                                                                                   |         161 |
-| [OR](commands/OR.md)                    | Logical OR operator                                                                                                                                                                                                                            |          58 |
+| [OR](commands/LOGICAL.md)               | Logical OR operator                                                                                                                                                                                                                            |          58 |
 | [PASS](commands/PASS.md)                | Specifies or cancels a password                                                                                                                                                                                                                |          88 |
 | [PBGET](commands/PBGET.md)              | Reads the data file contents under the specified filename and assigns them to $ variable, A() array or A$() array                                                                                                                              |          82 |
 | [PBLOAD](commands/PBLOAD.md)            | Load PB-100 series programs from cassette tape                                                                                                                                                                                                 |          80 |
@@ -129,6 +129,48 @@ All commands are reserved words.
 | [VARLIST](commands/VARLIST.md)          | Displays variable names and array names                                                                                                                                                                                                        |          93 |
 | [VERIFY](commands/VERIFY.md)            | Verifies the contents of a file stored on cassette tape                                                                                                                                                                                        |         169 |
 | [WRITE#](commands/WRITE_HASH.md)        | Rewrites and deletes DATA BANK data                                                                                                                                                                                                            |         175 |
+| [XOR](commands/LOGICAL.md)              | Logical XOR operator                                                                                                                                                                                                                           |          58 |
+
+## Operators
+
+### Arithmetic Operators
+
+| Symbol(s) | Description                           |
+|-----------|---------------------------------------|
+| `+`, `-`      | Signs                                 |
+| `+`         | Addition                              |
+| `-`         | Subtraction                           |
+| `*`         | Multiplication                        |
+| `/`         | Division                              |
+| `^`         | Power                                 |
+| `¥`         | Integer division                      |
+| `MOD`       | Integer remainder of integer division |
+
+### Relational Operators 
+
+| Symbol(s)   | Description             |
+|-------------|-------------------------|
+| `=`         | Equal to                |
+| `<>`, `><`  | Does not equal          |
+| `<`         | Less than               |
+| `>`         | Greater than            |
+| `=<`, `<=`  | Lesss than or equal to  |
+| `=>`, '`>=` | Greater than equal to ~ |
+
+### Logical Operators
+
+| Symbol(s) | Description     |
+|-----------|-----------------|
+| `NOT`     | Negation        |
+| `AND`     | Logical product |
+| `OR`      | Logical sum     |
+| `XOR`     | Exclusive OR    | 
+
+### String Operators
+
+| Symbol(s) | Description   |
+|-----------|---------------|
+| `+`       | Concatenation |
 
 ## Reserved Words
 
@@ -136,7 +178,6 @@ Reserved words not listed in the command section.
 
 | Command | 
 |---------|
-| ALL     |
 | AS      |
 | CALC    |
 | CSR     |
@@ -151,7 +192,6 @@ Reserved words not listed in the command section.
 | TO      |
 | VAC     |
 | VAR     |
-| XOR     |
 
 ## Calculation Range
 ± 1 × 10⁻⁹⁹ ~ ± 9.9999999999 × 10⁻⁹⁹ and 0. Internal
