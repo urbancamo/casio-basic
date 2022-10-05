@@ -16,7 +16,7 @@ Arguably the top-of-the-range model is the [FX-850P](http://www.computinghistory
 and have built a cable that allows me to download and upload files. This will allow
  me to confirm correct behaviour of the parser/interpreter.
 
-![Casio FX-850P](http://www.computinghistory.org.uk/userdata/images/large/99/77/product-99977.jpg)
+![Casio FX-850P](doc/images/Casio-FX850P.jpg)
 
 ## 03-OCT-2022
 
