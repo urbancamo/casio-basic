@@ -1,5 +1,5 @@
 # casio-basic
-A Casio Basic Project - Parser and Interpreter
+*A Casio Basic Project - Parser and Interpreter*
 
 This is my entry for the 
 [Retrochallenge 2022/10 Competition](https://www.retrochallenge.org/p/entrants-list-202210.html) and probably 
