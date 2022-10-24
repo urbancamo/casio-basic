@@ -142,7 +142,7 @@ object Converter {
     CasioCharacter(121, "y", ""),
     CasioCharacter(122, "z", ""),
     CasioCharacter(123, "{", ""),
-    CasioCharacter(124, "|", ""),
+    CasioCharacter(124, "¦", ""),
     CasioCharacter(125, "}", ""),
     CasioCharacter(126, "~", ""),
     CasioCharacter(127, "␡", "DEL"),
@@ -305,9 +305,10 @@ object Converter {
       "&amp;"
     } else if (str == "`") {
       "&#96;";
-    } else {
+    } else if (str == "\uD835\uDFF7") {
+      "⁻¹";
+    } else
       str
-    }
   }
 
   private val markdownTable = {
@@ -317,7 +318,7 @@ object Converter {
     lines += "|----------------|--------------------|-------------------|---------------------|------------------|\n"
     for (c <- sortedList) {
       val escapedUnicode = escapeForMarkup(c._2.unicode)
-      lines += s"| ${c._1} | `${escapedUnicode}` | ${c._2.codepoint} | ${c._2.name} | ${c._2.description} |\n"
+      lines += s"| ${c._1} | ${escapedUnicode} | ${c._2.codepoint} | ${c._2.name} | ${c._2.description} |\n"
     }
     lines.mkString
   }
@@ -347,7 +348,7 @@ object Converter {
     }).unicode).mkString
 
     // Patch up the single -1 character to be superscript minus following by mathematical monospace one
-    val content = rawContent.replace("\uD835\uDFF7", "⁻\uD835\uDFF7")
+    val content = rawContent.replace("\uD835\uDFF7", "⁻¹")
     val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".txt"), Charset.forName("UTF-8")))
     writer.write(content)
     writer.close
@@ -358,14 +359,16 @@ object Converter {
     // Convert a CASIO Basic encoded file to Markdown Compatible Unicode
     val inputStream = new BufferedInputStream(new FileInputStream(filename))
     val bytes = IOUtils.toByteArray(inputStream)
-    val rawOutput = bytes.map(b => Converter.casioToUnicode({
+    val rawContent = bytes.map(b => Converter.casioToUnicode({
       if (b < 0) {
         256 + b.toInt
       } else {
         b
       }
     }).unicode).mkString
-    val markdownOutput = "```basic\n" + rawOutput + "```"
+    // Patch up the single -1 character to be superscript minus following by mathematical monospace one
+    val content = rawContent.replace("\uD835\uDFF7", "⁻¹")
+    val markdownOutput = "```basic\n" + content + "```"
     val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".md"), Charset.forName("UTF-8")))
     writer.write(markdownOutput)
     writer.close
@@ -375,8 +378,10 @@ object Converter {
     // Convert a Unicode file to Casio Basic encoding
     val rawContent = Source.fromFile(filename).mkString
 
-    // patch up the -1 hack by removing the leading superscript minus
-    val content = rawContent.replace("⁻\uD835\uDFF7", "\uD835\uDFF7")
+
+    // patch up the -1 hack converting to the intermediate '1' monospace maths symbol
+    val content = rawContent.replace("⁻¹", "\uD835\uDFF7")
+
     // Split the input file into a list of strings representing each codepoint
     val splitInput = asScala(content
       .codePoints() // Produce a `IntStream` of code point numbers.
