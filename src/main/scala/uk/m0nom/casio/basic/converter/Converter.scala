@@ -1,13 +1,16 @@
 package uk.m0nom.casio.basic.converter
 
-import java.io.{BufferedOutputStream, BufferedWriter, FileOutputStream, FileWriter}
+import java.io.{BufferedInputStream, BufferedOutputStream, BufferedWriter, FileInputStream, FileOutputStream, FileWriter}
 import java.nio.charset.Charset
 import java.util.stream.Collectors
 import scala.io.Source
 import scala.jdk.javaapi.CollectionConverters.asScala
+import org.apache.commons.io.IOUtils
+
+import scala.collection.immutable.ListMap
 
 case class CasioCharacter(val index: Int, val unicode: String, val description: String);
-case class CasioCharacterCp(val index: Int, val unicode: String, val codepoint: Int, val description: String);
+case class CasioCharacterCp(val index: Int, val unicode: String, val codepoint: Int, val name: String, val description: String);
 
 
 // https://www.ocrconvert.com/japanese-ocr
@@ -47,7 +50,7 @@ object Converter {
     CasioCharacter(29, "⇦", "LEFT ARROW"),
     CasioCharacter(30, "⇧", "UP ARROW"),
     CasioCharacter(31, "⇩", "DOWN ARROW"),
-    CasioCharacter(32, " ", ""),
+    CasioCharacter(32, " ", "SPC"),
     CasioCharacter(33, "!", ""),
     CasioCharacter(34, "\"", ""),
     CasioCharacter(35, "#", ""),
@@ -173,9 +176,9 @@ object Converter {
     CasioCharacter(155, "⁻", ""),
     CasioCharacter(156, "ⁿ", ""),
     CasioCharacter(157, "﹪", ""),
-    CasioCharacter(158, "¬", ""),
+    CasioCharacter(158, "\uD835\uDFF7", ""),
     CasioCharacter(159, "÷", ""),
-    CasioCharacter(160, " ", "SPC"),
+    CasioCharacter(160, "␣", "SPC"),
     CasioCharacter(161, "。", ""),
     CasioCharacter(162, "「", ""),
     CasioCharacter(163, "」", ""),
@@ -267,24 +270,56 @@ object Converter {
     CasioCharacter(249, "±", ""),
     CasioCharacter(250, "∓", ""),
     CasioCharacter(251, "₀", ""),
-    CasioCharacter(252, "┐", ""),
-    CasioCharacter(253, "┘", ""),
-    CasioCharacter(254, "├", ""),
-    CasioCharacter(255, "┤", ""))
+    CasioCharacter(252, "➀", "User Defined #1"),
+    CasioCharacter(253, "➁", "User Defined #2"),
+    CasioCharacter(254, "➂", "User Defined #3"),
+    CasioCharacter(255, "➃", "User Defined #4"))
 
 //  private val casioCharset = asScala(casioCharsetCp.mkString.codePoints.boxed.collect(Collectors.toList[Integer])) //asScala(casioCharsetCp).map(i => Int.unbox(i))
   private val casioToUnicode = {
     var newMap: Map[Int, CasioCharacterCp] = Map.empty
     for (c <- casioCharset)
-      newMap += (c.index -> CasioCharacterCp(c.index, c.unicode, Character.codePointOf(c.unicode), c.description))
+      newMap += (c.index -> CasioCharacterCp(c.index, c.unicode, Character.codePointAt(c.unicode,0), Character.getName(Character.codePointAt(c.unicode,0)), c.description))
     newMap
   }
 
   private val unicodeToCasio = {
     var newMap: Map[String, CasioCharacterCp] = Map.empty
     for (c <- casioCharset)
-      newMap += (c.unicode -> CasioCharacterCp(c.index, c.unicode, Character.codePointOf(c.unicode), c.description))
+      newMap += (c.unicode -> CasioCharacterCp(c.index, c.unicode, Character.codePointAt(c.unicode,0), Character.getName(Character.codePointAt(c.unicode,0)), c.description))
     newMap
+  }
+
+  private def escapeForMarkup(str: String): String = {
+    if (str == ">") {
+      "&gt;"
+    } else if (str == "|") {
+      "&vert;"
+    } else if (str == "\t") {
+      "<tab>"
+    } else if (str == "\n") {
+      "<nl>"
+    } else if (str == "\r") {
+      "<cr>"
+    } else if (str == "&") {
+      "&amp;"
+    } else if (str == "`") {
+      "&#96;";
+    } else {
+      str
+    }
+  }
+
+  private val markdownTable = {
+    val sortedList = ListMap(casioToUnicode.toSeq.sortWith(_._1 < _._1): _*)
+    var lines: String = ""
+    lines += "| Casio Position | Unicode Equivalent | Unicode CodePoint | Unicode Description | Casio Description|\n"
+    lines += "|----------------|--------------------|-------------------|---------------------|------------------|\n"
+    for (c <- sortedList) {
+      val escapedUnicode = escapeForMarkup(c._2.unicode)
+      lines += s"| ${c._1} | `${escapedUnicode}` | ${c._2.codepoint} | ${c._2.name} | ${c._2.description} |\n"
+    }
+    lines.mkString
   }
 
   private val charIndex = Range(0, 255)
@@ -301,16 +336,47 @@ object Converter {
 
   def convertCasioBasicFileToUnicodeFile(filename: String): Unit = {
     // Convert a CASIO Basic encoded file to Unicode
-    val content = Source.fromFile(filename).mkString
-    val output = content.map(c => Converter.casioToUnicode(c.toInt)).mkString
+    val inputStream = new BufferedInputStream(new FileInputStream(filename))
+    val bytes = IOUtils.toByteArray(inputStream)
+    val rawContent = bytes.map(b => Converter.casioToUnicode({
+      if (b < 0) {
+        256 + b.toInt
+      } else {
+        b
+      }
+    }).unicode).mkString
+
+    // Patch up the single -1 character to be superscript minus following by mathematical monospace one
+    val content = rawContent.replace("\uD835\uDFF7", "⁻\uD835\uDFF7")
     val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".txt"), Charset.forName("UTF-8")))
-    writer.write(output)
+    writer.write(content)
+    writer.close
+    convertCasioBasicFileToMarkdownFile(filename)
+  }
+
+  def convertCasioBasicFileToMarkdownFile(filename: String): Unit = {
+    // Convert a CASIO Basic encoded file to Markdown Compatible Unicode
+    val inputStream = new BufferedInputStream(new FileInputStream(filename))
+    val bytes = IOUtils.toByteArray(inputStream)
+    val rawOutput = bytes.map(b => Converter.casioToUnicode({
+      if (b < 0) {
+        256 + b.toInt
+      } else {
+        b
+      }
+    }).unicode).mkString
+    val markdownOutput = "```basic\n" + rawOutput + "```"
+    val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".md"), Charset.forName("UTF-8")))
+    writer.write(markdownOutput)
     writer.close
   }
 
   def convertUnicodeFileToCasioBasicFile(filename: String): Unit = {
     // Convert a Unicode file to Casio Basic encoding
-    val content = Source.fromFile(filename).mkString
+    val rawContent = Source.fromFile(filename).mkString
+
+    // patch up the -1 hack by removing the leading superscript minus
+    val content = rawContent.replace("⁻\uD835\uDFF7", "\uD835\uDFF7")
     // Split the input file into a list of strings representing each codepoint
     val splitInput = asScala(content
       .codePoints() // Produce a `IntStream` of code point numbers.
@@ -325,15 +391,19 @@ object Converter {
   def main(args: Array[String]) = {
     println(s"args size is ${args.length}")
     if (args.size != 1) {
-      println("Usage: Converter file.[bas|txt]")
+      println("Usage: Converter [ file.[bas|txt] | MARKDOWN ]")
       println("       use .bas to convert from Casio Basic to Unicode")
       println("       use .txt to convert from Unicode to Casio Basic")
+      println("       use keyword MARKDOWN to print markdown table to console")
+
       System.exit(-1)
     }
 
     val filename = args(0)
 
-    if (filename.endsWith(".bas")) {
+    if (filename == "MARKDOWN") {
+      println(markdownTable)
+    } else if (filename.endsWith(".bas")) {
       convertCasioBasicFileToUnicodeFile(filename)
     } else if (filename.endsWith(".txt")) {
       convertUnicodeFileToCasioBasicFile(filename)

@@ -1,0 +1,23 @@
+10 MODE8:DIM:GOSUB900:c$=CHR$(5):DEFCHR$(254)="A2A49C92A2":t$="N(ç,éí) a<ç<b"
+20 CLS:PRINTt$;TAB(0);"input new data (Y/N) ?";:a$=INPUT$(1,@)
+25 IFa$<>"Y" ANDa$<>"y" THEN40
+30 s$="x":GOSUB"LIB0:S6020":GOSUB900
+40 f=95:r=sa:IFr THENs=sg:t=sk^2 ELSEs=0:t=0
+45 CLS:PRINTt$;
+50 z=r:s$="n":GOSUB500:r=z
+60 z=s:s$="˛":GOSUB500:s=z
+80 z=t:s$="V":GOSUB500:t=z
+90 CLS:PRINT"Confidence level (1-à)[%]";
+95 z=f:s$="1-à":GOSUB500:f=z:IFf<0 ORf>100 THEN95
+97 CLS:PRINT"N(ç,éí)   ";f;"%";TAB(0);".....";
+100 n=r-1:p=(1-f/100)/2:sr=0:GOSUB"LIB0:S6430":GOSUB900:IFsr THEN*
+110 z=s-x*SQR(t/r):GOSUB400:a=z
+120 z=s+x*SQR(t/r):GOSUB400:b=z
+130 PRINTc$;a;"< ç <";b;:a$=INPUT$(1,@):GOTO45
+400 IFz THENz=ROUND(z,LOG(ABSz)-5)
+410 RETURN
+500 LOCATE0,1:PRINTc$;s$;"=";z;"?";:INPUT@10;z:LOCATE0,0:RETURN
+900 ONERRORGOTO910:RETURN
+910 IFERR=1 THENCLS:ONERRORGOTO0
+920 IFERL=500 THENRESUME500
+930 LOCATE0,1:PRINTc$;"not found";:z$=INPUT$(1,@):RESUME20

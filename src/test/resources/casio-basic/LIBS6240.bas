@@ -1,0 +1,18 @@
+5 ONERRORGOTO500
+10 ANGLE1:IFx=<0 THENp=1:GOTO80
+20 IFm MOD 2=0 THENz=m/(m+n*x):GOSUB100:p=1-p:GOTO80
+30 IFn MOD 2=0 THENz=n*x/(m+n*x):i=m:m=n:n=i:GOSUB100:i=m:m=n:n=i:GOTO80
+40 y=ATNSQR(n*x/m)
+50 GOSUB200:p=p+a:IFp<0 THENp=0
+80 y=p:RETURN
+100 a=1:FORi=m-2 TO2 STEP-2:a=1+(n+i-2)/i*z*a:NEXT
+110 p=(1-z)^(n/2)*a:RETURN
+200 z=(SINy)^2:IFn=1 THENa=0 ELSEa=1
+210 FORi=n-2 TO3 STEP-2:a=1+(m+i-2)/i*z*a:NEXT
+220 b=PI:FORi=2 TOm-1 STEP2:b=b*(i-1)/i:NEXT
+230 p=2/b*SINy*(COSy)^m*a
+250 z=(COSy)^2:IFm=1 THENa=0 ELSEa=1
+260 FORi=m-2 TO3 STEP-2:a=1+(i-1)/i*z*a:NEXT
+270 a=1-2*y/PI-2/PI*SINy*COSy*a:RETURN
+500 IFERR=1 THENCLS:ONERRORGOTO0
+510 sr=1:RESUME80

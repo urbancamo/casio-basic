@@ -1,0 +1,12 @@
+5 ONERRORGOTO900
+20 MODE8:DIM:a=0:b=0:c=0:h=0:c$=CHR$(5)
+30 CLS:PRINT"bh(2a+c)/6  a:b:c:edge h:height";
+40 s$="a":z=a:GOSUB500:a=z
+41 s$="b":z=b:GOSUB500:b=z
+42 s$="c":z=c:GOSUB500:c=z
+43 s$="h":z=h:GOSUB500:h=z
+50 LOCATE0,1:PRINTc$;"Volume =";b*h*(2*a+c)/6;:z$=INPUT$(1,@):GOTO40
+500 LOCATE0,1:PRINTc$;s$;"=";z;"?";:INPUT@42;z:LOCATE0,0:IFz<0 THEN500 ELSERETURN
+900 IFERR=1 THENCLS:ONERRORGOTO0
+910 IFERL=500 THENRESUME500
+930 LOCATE0,1:PRINTc$;"not found";:z$=INPUT$(1,@):RESUME30

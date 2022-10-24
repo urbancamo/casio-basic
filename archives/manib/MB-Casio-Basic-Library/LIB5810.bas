@@ -1,0 +1,50 @@
+5 GOTO10010
+10 DATAsin’Œ+cos’Œ,1,10,20
+20 DATA1+tan’Œ,sec’Œ,10,30
+30 DATA1+cot’Œ,cosec’Œ,20,40
+40 DATAsin(ˆù‰),sinˆ¥cos‰ùcosˆ¥sin‰,30,50
+50 DATAcos(ˆù‰),cosˆ¥cos‰úsinˆ¥sin‰,40,60
+60 DATAtan(ˆù‰),(tanˆùtan‰)/(1útanˆ¥tan‰),50,70
+70 DATAcot(ˆù‰),(cotˆ¥cot‰ú1)/(cot‰ùcotˆ),60,80
+80 DATAsin2Œ,2sinŒ¥cosŒ,70,90
+90 DATAcos2Œ,cos’Œ-sin’Œ,80,100
+100 DATAcos2Œ,1-2sin’Œ,90,110
+110 DATAcos2Œ,2cos’Œ-1,100,120
+120 DATAtan2Œ,2tanŒ/(1-tan’Œ),110,130
+130 DATAsin(Œ/2),ù‚((1-cosŒ)/2),120,140
+140 DATAcos(Œ/2),ù‚((1+cosŒ)/2),130,150
+150 DATAtan(Œ/2),ù‚((1-cosŒ)/(1+cosŒ)),140,160
+160 DATAtan(Œ/2),(1-cosŒ)/sinŒ,150,170
+170 DATAtan(Œ/2),sinŒ/(1+cosŒ),160,180
+180 DATAtan(Œ/2),cosecŒ-cotŒ,170,190
+190 DATAcot(Œ/2),ù‚((1+cosŒ)/(1-cosŒ)),180,200
+200 DATAcot(Œ/2),sinŒ/(1-cosŒ),190,210
+210 DATAcot(Œ/2),(1+cosŒ)/sinŒ,200,220
+220 DATAcot(Œ/2),cosecŒ+cotŒ,210,230
+230 DATAsin3Œ,3sinŒ-4sin“Œ,220,240
+240 DATAcos3Œ,4cos“Œ-3cosŒ,230,250
+250 DATAtan3Œ,(3tanŒ-tan“Œ)/(1-3tan’Œ),240,260
+260 DATA2sinˆ¥cos‰,sin(ˆ+‰)+sin(ˆ-‰),250,270
+270 DATA2cosˆ¥sin‰,sin(ˆ+‰)-sin(ˆ-‰),260,280
+280 DATA2cosˆ¥cos‰,cos(ˆ+‰)+cos(ˆ-‰),270,290
+290 DATA2sinˆ¥sin‰,-(cos(ˆ+‰)-cos(ˆ-‰)),280,300
+300 DATAsinˆ+sin‰,2sin((ˆ+‰)/2)¥cos((ˆ-‰)/2),290,310
+310 DATAsinˆ-sin‰,2cos((ˆ+‰)/2)¥sin((ˆ-‰)/2),300,320
+320 DATAcosˆ+cos‰,2cos((ˆ+‰)/2)¥cos((ˆ-‰)/2),310,330
+330 DATAcosˆ-cos‰,-2sin((ˆ+‰)/2)¥sin((ˆ-‰)/2),320,340
+340 DATAtan(45ßù(Œ/2)),secŒùtanŒ,330,350
+350 DATAtan(45ßù(Œ/2)),(1ùsinŒ)/cosŒ,340,360
+360 DATAtan(45ßù(Œ/2)),cot(45ßú(Œ/2)),350,370
+370 DATAtan(45ß+Œ),(1+tanŒ)/(1-tanŒ),360,380
+380 DATAcot(45ß-Œ),(1+cotŒ)/(1-cotŒ),370,380
+10010 MODE8:DIM:x=10:y=380:r=x
+10110 RESTORE(r)
+10120 READm$,n$,b,c
+10130 l$="["+MID$(STR$(r/10),2)+"]":l=32-LEN(l$)
+10140 CLS:PRINTm$;TAB(l);l$;"=";n$;
+10150 z=ASC(INPUT$(1,@))
+10170 IFz=29 ANDr<>x THENr=x:GOTO10110
+10180 IFz=28 ANDr<>y THENr=y:GOTO10110
+10190 IFz=30 ANDr<>b THENr=b:GOTO10110
+10200 IF(z=31 ORz=13) ANDr<>c THENr=c:GOTO10110
+10280 GOTO10150
