@@ -9,8 +9,8 @@ import org.apache.commons.io.IOUtils
 
 import scala.collection.immutable.ListMap
 
-case class CasioCharacter(val index: Int, val unicode: String, val description: String);
-case class CasioCharacterCp(val index: Int, val unicode: String, val codepoint: Int, val name: String, val description: String);
+case class CasioCharacter(index: Int, unicode: String, description: String)
+case class CasioCharacterCp(index: Int, unicode: String, codepoint: Int, name: String, description: String)
 
 
 // https://www.ocrconvert.com/japanese-ocr
@@ -291,41 +291,46 @@ object Converter {
   }
 
   private def escapeForMarkup(str: String): String = {
-    if (str == ">") {
-      "&gt;"
-    } else if (str == "|") {
-      "&vert;"
-    } else if (str == "\t") {
-      "<tab>"
-    } else if (str == "\n") {
-      "<nl>"
-    } else if (str == "\r") {
-      "<cr>"
-    } else if (str == "&") {
-      "&amp;"
-    } else if (str == "`") {
-      "&#96;";
-    } else if (str == "\uD835\uDFF7") {
-      "⁻¹";
-    } else
-      str
+    str match {
+      case ">" => "&gt;"
+      case "|" => "&vert;"
+      case "\t" => "<tab>"
+      case "\n" => "<nl>"
+      case "\r" => "<cr>"
+      case "&" => "&amp;"
+      case "`" => "&#96;"
+      case "\uD835\uDFF7" => "⁻¹"
+      case _ => str
+    }
   }
 
+  def padHex(value: Int): String = {
+    val rawHex = value.toHexString
+    rawHex.length match {
+      case 1 => s"0$rawHex"
+      case _ => rawHex
+    }
+  }
+  def formatUnicodeCodePoint(codePoint: Int): String = {
+    val rawHex = codePoint.toHexString
+    rawHex.length match {
+      case 2 => s"\\u00$rawHex"
+      case 5 => s"\\u000$rawHex"
+      case 6 => s"\\u0000$rawHex"
+      case _ => s"\\u$rawHex"
+    }
+  }
   private val markdownTable = {
     val sortedList = ListMap(casioToUnicode.toSeq.sortWith(_._1 < _._1): _*)
     var lines: String = ""
-    lines += "| Casio Position | Unicode Equivalent | Unicode CodePoint | Unicode Description | Casio Description|\n"
-    lines += "|----------------|--------------------|-------------------|---------------------|------------------|\n"
+    lines += "| Casio Dec | Casio Hex | Casio Description| Unicode Equivalent | Unicode CodePoint | Unicode Description |\n"
+    lines += "|----------:|----------:|------------------|--------------------|------------------:|---------------------|\n"
     for (c <- sortedList) {
       val escapedUnicode = escapeForMarkup(c._2.unicode)
-      lines += s"| ${c._1} | ${escapedUnicode} | ${c._2.codepoint} | ${c._2.name} | ${c._2.description} |\n"
+      lines += s"| ${c._1} | ${padHex(c._1)} | ${c._2.description} | $escapedUnicode | ${formatUnicodeCodePoint(c._2.codepoint)} | ${c._2.name} |\n"
     }
     lines.mkString
   }
-
-  private val charIndex = Range(0, 255)
-
- // private val unicodeToCasio = casioCharsetCp.zip(charIndex).toMap
 
   def toUnicode(casioAscii: Int): String = {
     casioToUnicode(casioAscii).unicode
@@ -335,8 +340,7 @@ object Converter {
     unicodeToCasio(unicode).index
   }
 
-  def convertCasioBasicFileToUnicodeFile(filename: String): Unit = {
-    // Convert a CASIO Basic encoded file to Unicode
+  def loadCasioFileToString(filename: String):String = {
     val inputStream = new BufferedInputStream(new FileInputStream(filename))
     val bytes = IOUtils.toByteArray(inputStream)
     val rawContent = bytes.map(b => Converter.casioToUnicode({
@@ -346,38 +350,31 @@ object Converter {
         b
       }
     }).unicode).mkString
+    rawContent.replace("\uD835\uDFF7", "⁻¹")
+  }
 
+  def convertCasioBasicFileToUnicodeFile(filename: String): Unit = {
+    // Convert a CASIO Basic encoded file to Unicode
     // Patch up the single -1 character to be superscript minus following by mathematical monospace one
-    val content = rawContent.replace("\uD835\uDFF7", "⁻¹")
+    val content = loadCasioFileToString(filename)
     val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".txt"), Charset.forName("UTF-8")))
     writer.write(content)
-    writer.close
+    writer.close()
     convertCasioBasicFileToMarkdownFile(filename)
   }
 
   def convertCasioBasicFileToMarkdownFile(filename: String): Unit = {
     // Convert a CASIO Basic encoded file to Markdown Compatible Unicode
-    val inputStream = new BufferedInputStream(new FileInputStream(filename))
-    val bytes = IOUtils.toByteArray(inputStream)
-    val rawContent = bytes.map(b => Converter.casioToUnicode({
-      if (b < 0) {
-        256 + b.toInt
-      } else {
-        b
-      }
-    }).unicode).mkString
-    // Patch up the single -1 character to be superscript minus following by mathematical monospace one
-    val content = rawContent.replace("\uD835\uDFF7", "⁻¹")
+    val content = loadCasioFileToString(filename)
     val markdownOutput = "```basic\n" + content + "```"
     val writer = new BufferedWriter(new FileWriter(filename.replace(".bas", ".md"), Charset.forName("UTF-8")))
     writer.write(markdownOutput)
-    writer.close
+    writer.close()
   }
 
   def convertUnicodeFileToCasioBasicFile(filename: String): Unit = {
     // Convert a Unicode file to Casio Basic encoding
     val rawContent = Source.fromFile(filename).mkString
-
 
     // patch up the -1 hack converting to the intermediate '1' monospace maths symbol
     val content = rawContent.replace("⁻¹", "\uD835\uDFF7")
@@ -386,16 +383,16 @@ object Converter {
     val splitInput = asScala(content
       .codePoints() // Produce a `IntStream` of code point numbers.
       .mapToObj(i => Character.toString(i)) // Produce a `String` containing one or two java chars for each code point in the stream.
-      .collect(Collectors.toList[String]));
+      .collect(Collectors.toList[String]))
     val output = splitInput.map(s => toCasio(s).toByte).toArray
     val bos = new BufferedOutputStream(new FileOutputStream(filename.replace(".txt", ".bas")))
     bos.write(output)
-    bos.close
+    bos.close()
   }
 
-  def main(args: Array[String]) = {
+  def main(args: Array[String]): Unit = {
     println(s"args size is ${args.length}")
-    if (args.size != 1) {
+    if (args.length != 1) {
       println("Usage: Converter [ file.[bas|txt] | MARKDOWN ]")
       println("       use .bas to convert from Casio Basic to Unicode")
       println("       use .txt to convert from Unicode to Casio Basic")

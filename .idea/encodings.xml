@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/archives/CosmicV4/Cosmic2.s" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/basic/MB-Casio-Basic-Library/LIB_INFO.txt" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/basic/MB-Casio-Basic-Library/README.md" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/basic/MB-Casio-Basic-Library/sources/LIB_INFO.htm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/target/scala-2.13/test-classes/casio-basic/Cosmic2.bas" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/target/scala-2.13/test-classes/casio-basic/Cosmic2.s" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/target/scala-2.13/test-classes/unicode/casio-basic-sample.bas" charset="US-ASCII" />
   </component>
 </project>

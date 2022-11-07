@@ -8,6 +8,18 @@ class CasioBasicConverterTestSuite extends AnyFunSuite {
     Converter.convertUnicodeFileToCasioBasicFile("unicode/casio-basic-sample.txt")
   }
 
+  test("Cosmic2") {
+    Converter.convertCasioBasicFileToUnicodeFile("casio-basic/Cosmic2.bas")
+  }
+
+  test("CosmicV4") {
+    Converter.convertCasioBasicFileToUnicodeFile("casio-basic/CosmicV4.bas")
+  }
+
+  test("clr") {
+    Converter.convertCasioBasicFileToUnicodeFile("casio-basic/clr.bas")
+  }
+
   test("LIB0400") {
     Converter.convertCasioBasicFileToUnicodeFile("casio-basic/LIB0400.bas")
   }
