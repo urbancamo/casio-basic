@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="sbt: com.lihaoyi:sourcecode_2.13:0.2.3:jar">
+  <library name="sbt: com.lihaoyi:sourcecode_2.13:0.2.3:jar" external-system-id="SBT">
     <CLASSES>
       <root url="jar://$USER_HOME$/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.2.3/sourcecode_2.13-0.2.3.jar!/" />
     </CLASSES>
